@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RaceTimer – Support</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 680px;
+      margin: 60px auto;
+      padding: 0 24px;
+      color: #1c1c1e;
+      background: #f2f2f7;
+    }
+    h1 { font-size: 2rem; margin-bottom: 4px; }
+    h2 { font-size: 1.1rem; margin-top: 40px; color: #3a3a3c; }
+    p, li { line-height: 1.7; color: #3a3a3c; }
+    a { color: #007aff; text-decoration: none; }
+    .badge {
+      display: inline-block;
+      background: #007aff;
+      color: white;
+      border-radius: 12px;
+      padding: 4px 14px;
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+    }
+    footer { margin-top: 60px; font-size: 0.8rem; color: #8e8e93; }
+  </style>
+</head>
+<body>
+
+  <h1>⛵ RaceTimer</h1>
+  <span class="badge">Support</span>
+
+  <p>
+    RaceTimer is a GPS speed and maneuver tracking app for water sports,
+    compatible with iPhone and Apple Watch.
+  </p>
+
+  <h2>📧 Contact</h2>
+  <p>
+    For questions, bug reports or feature requests, please contact us at:<br>
+    <a href="mailto:support@wind-powered.com">support@wind-powered.com</a>
+  </p>
+
+  <h2>❓ Frequently Asked Questions</h2>
+  <ul>
+    <li><strong>Does the app require an account?</strong><br>
+      No. All features work without signing in. Sign in with Apple is optional
+      and is used only to back up your sessions to your personal iCloud.</li>
+    <li><strong>How do I cancel my subscription?</strong><br>
+      Open the iOS Settings app → tap your name → Subscriptions → RaceTimer
+      → Cancel Subscription.</li>
+    <li><strong>My Apple Watch is not detecting my subscription.</strong><br>
+      Open the RaceTimer app on your iPhone first. This will sync your
+      subscription status to the Watch automatically.</li>
+    <li><strong>Does the app work over a wetsuit?</strong><br>
+      To use the Watch over a wetsuit, disable Wrist Detection in the Watch
+      app → Passcode settings.</li>
+  </ul>
+
+  <h2>🔒 Privacy</h2>
+  <p>
+    RaceTimer does not collect or transmit personal data to any server.
+    Session data is stored locally on your device and optionally in your
+    own iCloud account. We have no access to your data.
+  </p>
+
+  <h2>📄 Terms & EULA</h2>
+  <p>
+    By using RaceTimer you agree to Apple's standard
+    <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">
+    End User License Agreement</a>.
+  </p>
+
+  <footer>
+    © 2026 Wind Powered. All rights reserved.
+  </footer>
+
+</body>
+</html>
