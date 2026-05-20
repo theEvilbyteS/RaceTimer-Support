@@ -1,356 +1,1013 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RacerTime — Water Sports Racing Timer</title>
-  <meta name="description" content="Advanced racing tools for every water sports athlete. GPS speed tracking, race timer, buoy navigation and maneuver detection for iPhone and Apple Watch."/>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RacerTime — Premium Water Sports Racing Timer</title>
+  <meta
+    name="description"
+    content="RacerTime brings premium race timing, buoy guidance, GPS analysis and Apple Watch performance tools to water sports athletes."
+  />
+  <meta name="theme-color" content="#081224" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-    body { font-family: 'Inter', -apple-system, sans-serif; }
-    .gradient-hero { background: linear-gradient(135deg, #0d1a40 0%, #0a0f1e 60%, #0d1a40 100%); }
-    .gradient-card { background: linear-gradient(135deg, rgba(26,115,232,0.15), rgba(26,115,232,0.05)); }
-    .gradient-orange { background: linear-gradient(135deg, rgba(244,115,14,0.15), rgba(244,115,14,0.05)); }
-    .gradient-green  { background: linear-gradient(135deg, rgba(40,167,69,0.15),  rgba(40,167,69,0.05));  }
-    .gradient-purple { background: linear-gradient(135deg, rgba(123,47,247,0.15), rgba(123,47,247,0.05)); }
-    .app-badge { transition: transform 0.2s, opacity 0.2s; }
-    .app-badge:hover { transform: translateY(-2px); opacity: 0.9; }
-    .feature-card { transition: transform 0.2s, box-shadow 0.2s; }
-    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-    .faq-answer.open { max-height: 200px; }
-    .faq-icon { transition: transform 0.3s; }
-    .faq-icon.open { transform: rotate(45deg); }
-    html { scroll-behavior: smooth; }
+    :root{
+      --bg:#06101f;
+      --bg-2:#0a1730;
+      --panel:#0d1d38;
+      --panel-2:rgba(255,255,255,.06);
+      --line:rgba(255,255,255,.10);
+      --text:#f5f7fb;
+      --muted:#a8b3c7;
+      --blue:#4ea1ff;
+      --blue-2:#1a73e8;
+      --cyan:#61d7ff;
+      --orange:#f4730e;
+      --green:#2ecc71;
+      --shadow:0 20px 80px rgba(0,0,0,.35);
+      --radius:26px;
+      --radius-sm:18px;
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Inter",-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(78,161,255,.18), transparent 35%),
+        radial-gradient(circle at 80% 20%, rgba(97,215,255,.12), transparent 30%),
+        linear-gradient(180deg, #091425 0%, #06101f 45%, #040b16 100%);
+      line-height:1.55;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    .container{
+      width:min(var(--max), calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(18px);
+      background:rgba(6,16,31,.7);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:74px;
+      gap:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-weight:800;
+      letter-spacing:-.02em;
+    }
+
+    .brand-icon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:linear-gradient(180deg, #4ea1ff, #17345f);
+      box-shadow:0 10px 30px rgba(78,161,255,.35);
+      overflow:hidden;
+      flex-shrink:0;
+    }
+
+    .brand-title{
+      font-size:1.05rem;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:26px;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .nav-links a:hover{color:#fff}
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      border:none;
+      border-radius:999px;
+      padding:14px 22px;
+      font-weight:700;
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg, var(--blue-2), var(--cyan));
+      box-shadow:0 14px 36px rgba(26,115,232,.35);
+    }
+
+    .btn-secondary{
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+    }
+
+    .hero{
+      padding:68px 0 36px;
+      overflow:hidden;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      align-items:center;
+      gap:44px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:#b9d7ff;
+      background:rgba(78,161,255,.10);
+      border:1px solid rgba(78,161,255,.22);
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:.84rem;
+      font-weight:700;
+      margin-bottom:18px;
+    }
+
+    .hero h1{
+      font-size:clamp(2.8rem, 6vw, 5.7rem);
+      line-height:.96;
+      letter-spacing:-.05em;
+      margin:0 0 18px;
+    }
+
+    .hero h1 .accent{
+      display:block;
+      background:linear-gradient(135deg, #ffffff, #7fd7ff);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero p{
+      font-size:1.12rem;
+      color:var(--muted);
+      max-width:640px;
+      margin:0 0 28px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:26px;
+    }
+
+    .hero-notes{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .chip{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .visual{
+      position:relative;
+      min-height:640px;
+    }
+
+    .glow{
+      position:absolute;
+      inset:auto;
+      width:420px;
+      height:420px;
+      border-radius:999px;
+      filter:blur(50px);
+      opacity:.45;
+      background:radial-gradient(circle, rgba(78,161,255,.8), transparent 65%);
+      top:70px;
+      left:50%;
+      transform:translateX(-50%);
+      pointer-events:none;
+    }
+
+    .device-stack{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      height:100%;
+      padding-top:20px;
+    }
+
+    .phone{
+      width:min(320px, 42vw);
+      aspect-ratio:9/19.5;
+      border-radius:42px;
+      padding:10px;
+      background:linear-gradient(180deg, #20293f, #090f1d);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      position:relative;
+      z-index:2;
+    }
+
+    .phone::before{
+      content:"";
+      position:absolute;
+      top:10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:34%;
+      height:24px;
+      border-radius:999px;
+      background:#000;
+      z-index:3;
+    }
+
+    .screen{
+      width:100%;
+      height:100%;
+      border-radius:34px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),
+        linear-gradient(180deg, #0d1a40 0%, #091126 100%);
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#6b7c9b;
+      text-align:center;
+      font-weight:600;
+      padding:24px;
+    }
+
+    .watch{
+      width:min(170px, 25vw);
+      aspect-ratio:1/1.2;
+      border-radius:34px;
+      padding:10px;
+      background:linear-gradient(180deg, #1e2537, #090d17);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      position:absolute;
+      left:0;
+      bottom:60px;
+      z-index:3;
+    }
+
+    .watch .screen{
+      border-radius:26px;
+      font-size:.8rem;
+    }
+
+    .float-card{
+      position:absolute;
+      right:0;
+      bottom:42px;
+      z-index:4;
+      width:min(220px, 34vw);
+      padding:18px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(10,23,48,.82);
+      backdrop-filter:blur(18px);
+      box-shadow:var(--shadow);
+    }
+
+    .float-card .mini{
+      color:var(--muted);
+      font-size:.75rem;
+      margin-bottom:6px;
+    }
+
+    .float-card .big{
+      font-size:1.8rem;
+      font-weight:800;
+      letter-spacing:-.04em;
+    }
+
+    .section{
+      padding:92px 0;
+    }
+
+    .section-head{
+      text-align:center;
+      max-width:760px;
+      margin:0 auto 42px;
+    }
+
+    .section-head .tag{
+      display:inline-block;
+      color:#88c0ff;
+      font-weight:800;
+      font-size:.8rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+
+    .section-head h2{
+      font-size:clamp(2rem, 4vw, 3.6rem);
+      line-height:1.02;
+      letter-spacing:-.04em;
+      margin:0 0 12px;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      font-size:1.05rem;
+    }
+
+    .features-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .feature{
+      padding:24px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.09);
+      box-shadow:var(--shadow);
+      min-height:240px;
+    }
+
+    .feature-icon{
+      width:54px;
+      height:54px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.4rem;
+      margin-bottom:18px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .feature h3{
+      margin:0 0 10px;
+      font-size:1.24rem;
+      letter-spacing:-.03em;
+    }
+
+    .feature p{
+      margin:0;
+      color:var(--muted);
+      font-size:.97rem;
+    }
+
+    .sports{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    .sport{
+      padding:18px 16px;
+      border-radius:20px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      color:#dfe7f6;
+      justify-content:center;
+    }
+
+    .sport span{
+      font-size:1.25rem;
+    }
+
+    .pricing-wrap{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:22px;
+      max-width:860px;
+      margin:0 auto;
+    }
+
+    .price-card{
+      position:relative;
+      padding:30px;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);
+    }
+
+    .price-card.featured{
+      background:
+        linear-gradient(180deg, rgba(78,161,255,.16), rgba(255,255,255,.04)),
+        rgba(255,255,255,.04);
+      border:1px solid rgba(78,161,255,.32);
+      transform:translateY(-8px);
+    }
+
+    .pill{
+      display:inline-block;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.04em;
+    }
+
+    .pill.blue{
+      background:rgba(78,161,255,.14);
+      color:#9fd0ff;
+      border:1px solid rgba(78,161,255,.24);
+    }
+
+    .pill.green{
+      background:rgba(46,204,113,.14);
+      color:#8ff0bb;
+      border:1px solid rgba(46,204,113,.24);
+    }
+
+    .price-name{
+      margin:16px 0 10px;
+      font-size:1.45rem;
+      font-weight:800;
+    }
+
+    .price{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      margin-bottom:6px;
+    }
+
+    .price .value{
+      font-size:3.5rem;
+      line-height:.95;
+      font-weight:900;
+      letter-spacing:-.06em;
+    }
+
+    .price .period{
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .price-sub{
+      color:var(--muted);
+      font-size:.94rem;
+      margin-bottom:20px;
+    }
+
+    .list{
+      list-style:none;
+      padding:0;
+      margin:0 0 24px;
+    }
+
+    .list li{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:9px 0;
+      color:#dbe3f1;
+    }
+
+    .list li .ok{
+      color:var(--green);
+      font-weight:900;
+    }
+
+    .faq{
+      max-width:860px;
+      margin:0 auto;
+      display:grid;
+      gap:12px;
+    }
+
+    .faq-item{
+      border-radius:22px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+
+    .faq-q{
+      width:100%;
+      background:none;
+      border:none;
+      color:#fff;
+      text-align:left;
+      font:inherit;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:22px 24px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .faq-a{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .28s ease;
+      color:var(--muted);
+      padding:0 24px;
+    }
+
+    .faq-a.open{
+      max-height:180px;
+      padding-bottom:22px;
+    }
+
+    .faq-plus{
+      color:#95a7c6;
+      font-size:1.4rem;
+      transition:transform .28s ease;
+      flex-shrink:0;
+    }
+
+    .faq-plus.open{
+      transform:rotate(45deg);
+    }
+
+    .cta{
+      padding:96px 0;
+    }
+
+    .cta-box{
+      padding:44px 34px;
+      border-radius:34px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(78,161,255,.22), transparent 34%),
+        linear-gradient(135deg, #0d1d38, #0a1326);
+      border:1px solid rgba(255,255,255,.10);
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .cta-box h2{
+      font-size:clamp(2rem, 4vw, 3.2rem);
+      line-height:1.02;
+      letter-spacing:-.04em;
+      margin:0 0 12px;
+    }
+
+    .cta-box p{
+      margin:0 auto 24px;
+      max-width:680px;
+      color:var(--muted);
+      font-size:1.05rem;
+    }
+
+    footer{
+      padding:28px 0 48px;
+      border-top:1px solid rgba(255,255,255,.06);
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links a:hover{color:#fff}
+
+    @media (max-width: 1080px){
+      .hero-grid,
+      .features-grid,
+      .sports,
+      .pricing-wrap{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .hero-grid{
+        grid-template-columns:1fr;
+      }
+
+      .visual{
+        min-height:560px;
+      }
+
+      .watch{
+        left:40px;
+      }
+
+      .float-card{
+        right:40px;
+      }
+    }
+
+    @media (max-width: 720px){
+      .nav-links{display:none}
+      .hero{padding-top:44px}
+      .hero h1{font-size:2.9rem}
+      .features-grid,
+      .sports,
+      .pricing-wrap{
+        grid-template-columns:1fr;
+      }
+      .visual{
+        min-height:500px;
+      }
+      .phone{
+        width:min(290px, 80vw);
+      }
+      .watch{
+        width:120px;
+        left:6px;
+        bottom:44px;
+      }
+      .float-card{
+        width:170px;
+        right:0;
+        bottom:18px;
+      }
+      .cta-box{
+        padding:34px 22px;
+      }
+    }
   </style>
 </head>
-<body class="bg-gray-950 text-white">
+<body>
 
-  <!-- NAV -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-950/80 backdrop-blur-md border-b border-white/5">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <img src="icon.png" alt="RacerTime" class="w-8 h-8 rounded-xl" onerror="this.style.display='none'"/>
-        <span class="font-bold text-lg">RacerTime</span>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#">
+        <div class="brand-icon">
+          <!-- Reemplaza por tu icono real si quieres -->
+          <img src="icon.png" alt="RacerTime icon" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-title">RacerTime</div>
+      </a>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#sports">Sports</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="support/index.html">Support</a>
       </div>
-      <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
-        <a href="#features" class="hover:text-white transition-colors">Features</a>
-        <a href="#sports"   class="hover:text-white transition-colors">Sports</a>
-        <a href="#pricing"  class="hover:text-white transition-colors">Pricing</a>
-        <a href="#faq"      class="hover:text-white transition-colors">FAQ</a>
-        <a href="support/index.html" class="hover:text-white transition-colors">Support</a>
-      </div>
-      <a href="https://apps.apple.com/app/racertime/id000000000"
-         class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors">
-        Download
+
+      <a class="btn btn-primary" href="https://apps.apple.com/app/racertime/id000000000">
+        App Store
       </a>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="gradient-hero min-h-screen flex items-center pt-16">
-    <div class="max-w-6xl mx-auto px-6 py-24 text-center">
-      <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 text-blue-400 text-sm font-medium mb-8">
-        🎁 3-day free trial — no commitment
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Apple Watch + iPhone • 3-day free trial</div>
+        <h1>
+          Racing tools,<br>
+          <span class="accent">crafted for water.</span>
+        </h1>
+        <p>
+          Premium race timing, GPS buoy guidance, maneuver detection and performance analysis —
+          designed for athletes who need precision on the water and simplicity on the wrist.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://apps.apple.com/app/racertime/id000000000">
+            Download on the App Store
+          </a>
+          <a class="btn btn-secondary" href="#pricing">
+            View pricing
+          </a>
+        </div>
+
+        <div class="hero-notes">
+          <div class="chip">Digital Crown control</div>
+          <div class="chip">Optional iCloud backup</div>
+          <div class="chip">Apple Health integration</div>
+        </div>
       </div>
-      <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-6 leading-tight">
-        Race smarter.<br/>
-        <span class="text-blue-400">From your wrist.</span>
-      </h1>
-      <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-        Advanced GPS racing tools for water sports athletes.<br/>
-        Controlled entirely by the Digital Crown — even in salt water.
-      </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="https://apps.apple.com/app/racertime/id000000000"
-           class="app-badge inline-flex items-center gap-3 bg-white text-black font-semibold px-6 py-4 rounded-2xl text-lg shadow-2xl">
-          <svg viewBox="0 0 24 24" class="w-7 h-7 fill-black"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+
+      <div class="visual">
+        <div class="glow"></div>
+
+        <div class="device-stack">
+          <div class="watch">
+            <div class="screen">
+              Apple Watch screenshot<br>
+              368×448
+            </div>
+          </div>
+
+          <div class="phone">
+            <div class="screen">
+              iPhone screenshot<br>
+              1290×2796
+            </div>
+          </div>
+
+          <div class="float-card">
+            <div class="mini">Annual plan</div>
+            <div class="big">58% off</div>
+            <div class="mini" style="margin-top:8px">vs monthly</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="tag">Why RacerTime</div>
+        <h2>A premium toolkit for serious water sports sessions</h2>
+        <p>
+          From race countdowns to post-session analytics, RacerTime combines precision,
+          clarity and robust offline behavior in one clean ecosystem.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">⏱</div>
+          <h3>Race Timer</h3>
+          <p>
+            Control your countdown directly from the Digital Crown. Reliable in wet conditions,
+            with current speed, GPS distance and heart rate visible while racing.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🚩</div>
+          <h3>Judge Mode</h3>
+          <p>
+            Built for race officials to run sequences and flag timing independently on the Apple Watch,
+            with a distinct visual profile for judge workflows.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">⚓</div>
+          <h3>GPS Buoy Guide</h3>
+          <p>
+            Create custom race courses with 2 to 5 buoys and navigate precisely to each mark using
+            real-time distance and bearing.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">📊</div>
+          <h3>Performance Analysis</h3>
+          <p>
+            Review sessions on iPhone with route maps, speed charts, trends and actionable
+            performance metrics after every workout.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">↺</div>
+          <h3>Maneuver Detection</h3>
+          <p>
+            Automatic detection of tacks and gybes in sailing sports, including successful and failed
+            maneuvers for deeper technique analysis.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">☁</div>
+          <h3>Optional iCloud Backup</h3>
+          <p>
+            Sign in with Apple only if you want cloud backup. All features work without sign-in, and
+            your sessions remain local unless you choose iCloud.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sports" class="section" style="padding-top:40px">
+    <div class="container">
+      <div class="section-head">
+        <div class="tag">Supported sports</div>
+        <h2>Built around the disciplines that matter</h2>
+        <p>
+          Optimized for both water sports racing and complementary training disciplines.
+        </p>
+      </div>
+
+      <div class="sports">
+        <div class="sport"><span>🏄</span>Windsurf</div>
+        <div class="sport"><span>🪁</span>Kitesurf</div>
+        <div class="sport"><span>🪽</span>Wing Foil</div>
+        <div class="sport"><span>🏄‍♂️</span>SUP</div>
+        <div class="sport"><span>🛟</span>Foil</div>
+        <div class="sport"><span>⛵</span>Sailing</div>
+        <div class="sport"><span>🚴</span>Bike</div>
+        <div class="sport"><span>🏃</span>Running</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="tag">Pricing</div>
+        <h2>Simple, premium access</h2>
+        <p>
+          Start with a 3-day free trial, then choose the plan that fits your season.
+        </p>
+      </div>
+
+      <div class="pricing-wrap">
+        <div class="price-card featured">
+          <span class="pill blue">Best value</span>
+          <div class="price-name">Annual</div>
+          <div class="price">
+            <div class="value">$14.99</div>
+            <div class="period">/ year</div>
+          </div>
+          <div class="price-sub">About $1.25/month • 58% off vs monthly</div>
+
+          <ul class="list">
+            <li><span class="ok">✓</span><span>3-day free trial</span></li>
+            <li><span class="ok">✓</span><span>Full access to Watch + iPhone features</span></li>
+            <li><span class="ok">✓</span><span>GPS analysis, charts and maneuver stats</span></li>
+            <li><span class="ok">✓</span><span>Optional iCloud backup</span></li>
+          </ul>
+
+          <a class="btn btn-primary" style="width:100%" href="https://apps.apple.com/app/racertime/id000000000">
+            Start annual trial
+          </a>
+        </div>
+
+        <div class="price-card">
+          <span class="pill green">Flexible</span>
+          <div class="price-name">Monthly</div>
+          <div class="price">
+            <div class="value">$2.99</div>
+            <div class="period">/ month</div>
+          </div>
+          <div class="price-sub">Full access with a shorter commitment</div>
+
+          <ul class="list">
+            <li><span class="ok">✓</span><span>3-day free trial</span></li>
+            <li><span class="ok">✓</span><span>Same premium feature set</span></li>
+            <li><span class="ok">✓</span><span>Manage or cancel anytime</span></li>
+            <li><span class="ok">✓</span><span>Perfect for shorter seasons</span></li>
+          </ul>
+
+          <a class="btn btn-secondary" style="width:100%" href="https://apps.apple.com/app/racertime/id000000000">
+            Start monthly trial
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section" style="padding-top:34px">
+    <div class="container">
+      <div class="section-head">
+        <div class="tag">FAQ</div>
+        <h2>Answers before you hit the water</h2>
+        <p>
+          A few things users often ask before their first race or training session.
+        </p>
+      </div>
+
+      <div class="faq">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>Do I need an account to use RacerTime?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            No. All core features work without signing in. Sign in with Apple is optional and is used only for iCloud backup if you choose to enable it.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>Does the Apple Watch app work over a wetsuit?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            Yes, but you should disable Wrist Detection in the Watch app on iPhone under Passcode settings. Otherwise the Watch may pause the session when it loses skin contact.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>Can I use the app offline?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            Yes. GPS recording, speed tracking and heart rate capture work offline. Only optional iCloud backup requires connectivity.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>How do I cancel my subscription?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            You can manage or cancel your subscription anytime in your App Store account settings.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>Will I lose sessions if I uninstall the app?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            Sessions backed up to iCloud remain available. Sessions stored only locally on the device may be removed when the app is deleted.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Start your next race with clarity</h2>
+        <p>
+          RacerTime gives you timing, position, analytics and post-session insight in one refined experience built for Apple Watch and iPhone.
+        </p>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/racertime/id000000000">
           Download on the App Store
         </a>
-        <a href="#features"
-           class="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm font-medium px-6 py-4">
-          Learn more ↓
-        </a>
-      </div>
-
-      <!-- DEVICES MOCKUP PLACEHOLDER -->
-      <div class="mt-20 relative">
-        <div class="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full"></div>
-        <div class="relative flex items-end justify-center gap-6">
-          <!-- iPhone placeholder -->
-          <div class="w-48 h-96 bg-gray-800 rounded-[2.5rem] border-2 border-gray-700 shadow-2xl flex items-center justify-center">
-            <span class="text-gray-600 text-xs text-center px-4">iPhone Screenshot<br/>560×1200</span>
-          </div>
-          <!-- Watch placeholder -->
-          <div class="w-32 h-36 bg-gray-800 rounded-[1.5rem] border-2 border-gray-700 shadow-2xl flex items-center justify-center mb-8">
-            <span class="text-gray-600 text-xs text-center px-2">Watch<br/>368×448</span>
-          </div>
-          <!-- iPhone 2 placeholder -->
-          <div class="w-48 h-96 bg-gray-800 rounded-[2.5rem] border-2 border-gray-700 shadow-2xl flex items-center justify-center">
-            <span class="text-gray-600 text-xs text-center px-4">iPhone Screenshot<br/>560×1200</span>
-          </div>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section id="features" class="py-24 bg-gray-950">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">Everything you need on the water</h2>
-        <p class="text-gray-400 text-lg max-w-xl mx-auto">Designed for demanding conditions where touchscreens fail.</p>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <div class="feature-card gradient-card border border-blue-500/20 rounded-2xl p-6">
-          <div class="text-3xl mb-4">⏱️</div>
-          <h3 class="text-xl font-bold mb-2">Racing Timer</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Digital Crown countdown for race starts. Control without touching the screen — even underwater. Current and max speed visible at all times.</p>
-        </div>
-
-        <div class="feature-card gradient-orange border border-orange-500/20 rounded-2xl p-6">
-          <div class="text-3xl mb-4">🚩</div>
-          <h3 class="text-xl font-bold mb-2">Judge Mode</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Designed for race officials to manage race sequences and flag signals directly from the wrist. Independent color settings to distinguish roles.</p>
-        </div>
-
-        <div class="feature-card gradient-green border border-green-500/20 rounded-2xl p-6">
-          <div class="text-3xl mb-4">⚓</div>
-          <h3 class="text-xl font-bold mb-2">GPS Buoy Guide</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Configure custom race courses with 2–5 buoys. Navigate to each mark with real-time bearing and distance. Set your course anywhere on the water.</p>
-        </div>
-
-        <div class="feature-card gradient-purple border border-purple-500/20 rounded-2xl p-6">
-          <div class="text-3xl mb-4">📊</div>
-          <h3 class="text-xl font-bold mb-2">Performance Analysis</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">GPS heatmaps, speed charts, automatic tack & gybe detection, session metrics and 10-session trend analysis on your iPhone.</p>
-        </div>
-
-        <div class="feature-card border border-red-500/20 rounded-2xl p-6" style="background:linear-gradient(135deg,rgba(229,57,53,.15),rgba(229,57,53,.05))">
-          <div class="text-3xl mb-4">❤️</div>
-          <h3 class="text-xl font-bold mb-2">Heart Rate & Health</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Records heart rate using Apple HealthKit throughout every session. Works with Water Lock engaged — no data lost during intense water contact.</p>
-        </div>
-
-        <div class="feature-card gradient-card border border-blue-500/20 rounded-2xl p-6">
-          <div class="text-3xl mb-4">☁️</div>
-          <h3 class="text-xl font-bold mb-2">iCloud Backup <span class="text-xs font-normal text-gray-500">(Optional)</span></h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Optionally back up sessions to your own iCloud. Data is stored privately — not on any external server. All features work without sign-in.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- SPORTS -->
-  <section id="sports" class="py-24 bg-gray-900">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <h2 class="text-4xl font-bold mb-4">Built for your sport</h2>
-      <p class="text-gray-400 text-lg mb-16 max-w-xl mx-auto">Optimized metrics and maneuver detection for each discipline.</p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <div class="bg-gray-800 border border-gray-700 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span class="text-2xl">🏄</span><span class="font-semibold">Windsurf</span>
-        </div>
-        <div class="bg-gray-800 border border-gray-700 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span class="text-2xl">🪁</span><span class="font-semibold">Kitesurf</span>
-        </div>
-        <div class="bg-gray-800 border border-gray-700 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span class="text-2xl">🪂</span><span class="font-semibold">Wing Foil</span>
-        </div>
-        <div class="bg-gray-800 border border-gray-700 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span class="text-2xl">🏊</span><span class="font-semibold">SUP</span>
-        </div>
-        <div class="bg-gray-800 border border-gray-700 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span class="text-2xl">⛵</span><span class="font-semibold">Sailing</span>
-        </div>
-        <div class="bg-gray-800 border border-gray-700 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span class="text-2xl">🛸</span><span class="font-semibold">Foil</span>
-        </div>
-        <div class="bg-gray-800 border border-gray-700 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span class="text-2xl">🚴</span><span class="font-semibold">Bike</span>
-        </div>
-        <div class="bg-gray-800 border border-gray-700 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span class="text-2xl">🏃</span><span class="font-semibold">Running</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
-  <section id="pricing" class="py-24 bg-gray-950">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <h2 class="text-4xl font-bold mb-4">Simple pricing</h2>
-      <p class="text-gray-400 text-lg mb-4 max-w-xl mx-auto">Start with a 3-day free trial. Cancel anytime.</p>
-      <div class="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2 text-green-400 text-sm font-medium mb-16">
-        🎁 3 days free — no charge until trial ends
-      </div>
-      <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-
-        <!-- ANNUAL -->
-        <div class="relative border-2 border-blue-500 rounded-2xl p-8 bg-blue-500/5">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full">
-            BEST VALUE · 58% OFF
-          </div>
-          <div class="text-orange-400 font-semibold text-sm mb-2">Annual</div>
-          <div class="text-5xl font-black mb-1">$14.99</div>
-          <div class="text-gray-400 text-sm mb-6">per year · ~$1.25/month</div>
-          <ul class="text-sm text-gray-300 space-y-2 text-left mb-8">
-            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> All features included</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> iPhone + Apple Watch</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 3-day free trial</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Cancel anytime</li>
-          </ul>
-          <a href="https://apps.apple.com/app/racertime/id000000000"
-             class="block w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-3 rounded-xl transition-colors text-center">
-            Start Free Trial
-          </a>
-        </div>
-
-        <!-- MONTHLY -->
-        <div class="border border-gray-700 rounded-2xl p-8 bg-gray-900">
-          <div class="text-gray-400 font-semibold text-sm mb-2">Monthly</div>
-          <div class="text-5xl font-black mb-1">$2.99</div>
-          <div class="text-gray-400 text-sm mb-6">per month</div>
-          <ul class="text-sm text-gray-300 space-y-2 text-left mb-8">
-            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> All features included</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> iPhone + Apple Watch</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 3-day free trial</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Cancel anytime</li>
-          </ul>
-          <a href="https://apps.apple.com/app/racertime/id000000000"
-             class="block w-full border border-gray-600 hover:border-gray-400 text-white font-bold py-3 rounded-xl transition-colors text-center">
-            Start Free Trial
-          </a>
-        </div>
-
-      </div>
-      <p class="text-gray-600 text-xs mt-8 max-w-lg mx-auto">
-        Subscription renews automatically unless canceled at least 24 hours before the end of the current period.
-        Manage or cancel anytime in App Store settings.
-      </p>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="py-24 bg-gray-900">
-    <div class="max-w-3xl mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-16">Frequently Asked Questions</h2>
-      <div class="space-y-3" id="faq-list">
-
-        <div class="faq-item bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
-          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left">
-            <span class="font-semibold">Does the Watch app work over a wetsuit?</span>
-            <span class="faq-icon text-gray-400 text-xl font-light ml-4">+</span>
-          </button>
-          <div class="faq-answer px-6">
-            <p class="text-gray-400 text-sm pb-6">Yes, but you must disable <strong class="text-white">Wrist Detection</strong>. Go to the Watch app on your iPhone → Passcode → turn off Wrist Detection. Without this, the Watch may pause the session when it doesn't detect skin contact.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
-          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left">
-            <span class="font-semibold">Do I need an account to use the app?</span>
-            <span class="faq-icon text-gray-400 text-xl font-light ml-4">+</span>
-          </button>
-          <div class="faq-answer px-6">
-            <p class="text-gray-400 text-sm pb-6">No. All features work without signing in. Sign in with Apple is optional and only used to back up sessions to your personal iCloud — not to our servers.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
-          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left">
-            <span class="font-semibold">Can I use the app without internet?</span>
-            <span class="faq-icon text-gray-400 text-xl font-light ml-4">+</span>
-          </button>
-          <div class="faq-answer px-6">
-            <p class="text-gray-400 text-sm pb-6">Yes. GPS recording, speed tracking and heart rate work completely offline. Only iCloud backup requires a connection.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
-          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left">
-            <span class="font-semibold">My Watch is not detecting my subscription. What do I do?</span>
-            <span class="faq-icon text-gray-400 text-xl font-light ml-4">+</span>
-          </button>
-          <div class="faq-answer px-6">
-            <p class="text-gray-400 text-sm pb-6">Open the RacerTime app on your iPhone first — this syncs your subscription to the Watch automatically. If it still doesn't work, tap "Check Status" in the Watch paywall. Make sure Bluetooth is active.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
-          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left">
-            <span class="font-semibold">How do I cancel my subscription?</span>
-            <span class="faq-icon text-gray-400 text-xl font-light ml-4">+</span>
-          </button>
-          <div class="faq-answer px-6">
-            <p class="text-gray-400 text-sm pb-6">Go to iPhone Settings → your name → Subscriptions → RacerTime → Cancel Subscription. You can also manage it from the Account menu inside the app.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
-          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left">
-            <span class="font-semibold">Will my sessions be lost if I uninstall the app?</span>
-            <span class="faq-icon text-gray-400 text-xl font-light ml-4">+</span>
-          </button>
-          <div class="faq-answer px-6">
-            <p class="text-gray-400 text-sm pb-6">Sessions backed up to iCloud are preserved. Local-only sessions without backup will be deleted with the uninstall.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA FINAL -->
-  <section class="gradient-hero py-24">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <h2 class="text-4xl font-bold mb-4">Ready to race smarter?</h2>
-      <p class="text-gray-400 text-lg mb-10">Start your 3-day free trial. No commitment required.</p>
-      <a href="https://apps.apple.com/app/racertime/id000000000"
-         class="app-badge inline-flex items-center gap-3 bg-white text-black font-bold px-8 py-4 rounded-2xl text-lg shadow-2xl">
-        <svg viewBox="0 0 24 24" class="w-7 h-7 fill-black"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        Download on the App Store
-      </a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="bg-gray-950 border-t border-gray-800 py-12">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-3">
-          <img src="icon.png" alt="RacerTime" class="w-8 h-8 rounded-xl" onerror="this.style.display='none'"/>
-          <span class="font-bold text-gray-300">RacerTime</span>
-          <span class="text-gray-600 text-sm">by WindPowered</span>
-        </div>
-        <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
-          <a href="support/index.html"          class="hover:text-white transition-colors">Support</a>
-          <a href="support/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a>
-          <a href="support/terms-of-use.html"   class="hover:text-white transition-colors">Terms of Use</a>
-          <a href="https://apps.apple.com/app/racertime/id000000000" class="hover:text-white transition-colors">App Store</a>
-        </div>
-        <div class="text-gray-600 text-sm">© 2026 WindPowered</div>
+  <footer>
+    <div class="container footer-inner">
+      <div>© 2026 WindPowered • RacerTime</div>
+      <div class="footer-links">
+        <a href="support/index.html">Support</a>
+        <a href="support/privacy-policy.html">Privacy Policy</a>
+        <a href="support/terms-of-use.html">Terms of Use</a>
       </div>
     </div>
   </footer>
 
   <script>
-    function toggleFaq(btn) {
-      var answer = btn.nextElementSibling;
-      var icon   = btn.querySelector('.faq-icon');
-      var isOpen = answer.classList.contains('open');
-      // Cerrar todos
-      document.querySelectorAll('.faq-answer').forEach(function(a){ a.classList.remove('open'); });
-      document.querySelectorAll('.faq-icon').forEach(function(i){ i.classList.remove('open'); });
-      // Abrir el pulsado si estaba cerrado
-      if (!isOpen) {
+    function toggleFaq(button){
+      const answer = button.nextElementSibling;
+      const plus = button.querySelector('.faq-plus');
+      const open = answer.classList.contains('open');
+
+      document.querySelectorAll('.faq-a').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.faq-plus').forEach(el => el.classList.remove('open'));
+
+      if(!open){
         answer.classList.add('open');
-        icon.classList.add('open');
+        plus.classList.add('open');
       }
     }
   </script>
-
 </body>
 </html>
