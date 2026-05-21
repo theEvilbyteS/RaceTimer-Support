@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RacerTime — Precision Racing for Water Sports</title>
+  <meta
+    name="description"
+    content="Premium Apple Watch and iPhone race tools for water sports. Race timer, buoy guidance, GPS analysis, heart rate and maneuver detection."
+  />
+  <meta name="theme-color" content="#050c18" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root{
+      --bg:#040913;
+      --bg-2:#071120;
+      --bg-3:#0c1830;
+      --text:#f7f9fd;
+      --muted:#a9b5c9;
+      --soft:#7f8ca1;
+      --line:rgba(255,255,255,.09);
+      --line-strong:rgba(255,255,255,.16);
+      --surface:rgba(255,255,255,.05);
+      --surface-2:rgba(255,255,255,.035);
+      --blue:#56a8ff;
+      --blue-2:#1a73e8;
+      --cyan:#7be1ff;
+      --green:#2ecc71;
+      --orange:#f4730e;
+      --shadow:0 28px 100px rgba(0,0,0,.42);
+      --shadow-soft:0 18px 56px rgba(0,0,0,.28);
+      --max:1240px;
+      --r-xl:38px;
+      --r-lg:28px;
+      --r-md:22px;
+      --r-sm:16px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Inter",-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(86,168,255,.16), transparent 32%),
+        radial-gradient(circle at 88% 14%, rgba(123,225,255,.10), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(26,115,232,.08), transparent 30%),
+        linear-gradient(180deg, #06101f 0%, #040913 44%, #03070f 100%);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+      background-size:54px 54px;
+      mask-image:linear-gradient(180deg, rgba(255,255,255,.2), transparent 75%);
+      opacity:.35;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+
+    .container{
+      width:min(var(--max), calc(100% - 32px));
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+
+    .lang-switch{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:4px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .lang-btn{
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      font:inherit;
+      font-weight:700;
+      font-size:.82rem;
+      padding:8px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .lang-btn.active{
+      color:#fff;
+      background:rgba(255,255,255,.08);
+    }
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:60;
+      backdrop-filter:blur(20px);
+      background:rgba(4,9,19,.72);
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+
+    .nav-inner{
+      min-height:78px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .brand-mark{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      overflow:hidden;
+      background:linear-gradient(180deg, #4ea1ff 0%, #21477c 100%);
+      box-shadow:0 12px 28px rgba(78,161,255,.30);
+      flex-shrink:0;
+    }
+
+    .brand-name{
+      font-size:1.04rem;
+    }
+
+    .menu{
+      display:flex;
+      align-items:center;
+      gap:26px;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .menu a:hover{color:#fff}
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      border-radius:999px;
+      padding:14px 22px;
+      font-weight:700;
+      transition:.2s ease;
+      border:none;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg, var(--blue-2), var(--cyan));
+      box-shadow:0 18px 42px rgba(26,115,232,.34);
+    }
+
+    .btn-secondary{
+      color:#fff;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    .hero{
+      position:relative;
+      padding:88px 0 58px;
+      overflow:hidden;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      width:980px;
+      height:980px;
+      left:50%;
+      top:-430px;
+      transform:translateX(-50%);
+      border-radius:999px;
+      background:radial-gradient(circle, rgba(86,168,255,.11), transparent 62%);
+      filter:blur(30px);
+      pointer-events:none;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.02fr .98fr;
+      gap:58px;
+      align-items:center;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(86,168,255,.09);
+      border:1px solid rgba(86,168,255,.20);
+      color:#c3e0ff;
+      font-size:.82rem;
+      font-weight:800;
+      letter-spacing:.02em;
+      margin-bottom:20px;
+    }
+
+    h1,h2,h3{margin:0;letter-spacing:-.05em}
+
+    .hero h1{
+      font-size:clamp(3.3rem, 7vw, 7rem);
+      line-height:.9;
+      font-weight:900;
+      margin-bottom:18px;
+    }
+
+    .hero h1 .fade{
+      display:block;
+      background:linear-gradient(135deg, #ffffff 0%, #9fdcff 52%, #dff7ff 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero-copy{
+      color:var(--muted);
+      font-size:1.14rem;
+      max-width:660px;
+      margin:0 0 30px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .hero-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+
+    .meta-pill{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .hero-visual{
+      position:relative;
+      min-height:760px;
+    }
+
+    .ambient{
+      position:absolute;
+      width:540px;
+      height:540px;
+      border-radius:999px;
+      top:80px;
+      left:50%;
+      transform:translateX(-50%);
+      background:radial-gradient(circle, rgba(86,168,255,.8), transparent 64%);
+      opacity:.22;
+      filter:blur(72px);
+      pointer-events:none;
+    }
+
+    .device-stage{
+      position:relative;
+      display:flex;
+      height:100%;
+      align-items:flex-end;
+      justify-content:center;
+      padding-top:26px;
+    }
+
+    .phone-shell{
+      width:min(355px, 44vw);
+      aspect-ratio:9/19.5;
+      border-radius:46px;
+      background:linear-gradient(180deg, #1d2537 0%, #04080f 100%);
+      border:1px solid rgba(255,255,255,.12);
+      padding:10px;
+      box-shadow:var(--shadow);
+      position:relative;
+      z-index:2;
+    }
+
+    .phone-shell::before{
+      content:"";
+      position:absolute;
+      top:10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:34%;
+      height:26px;
+      border-radius:999px;
+      background:#000;
+      z-index:4;
+    }
+
+    .phone-screen{
+      height:100%;
+      border-radius:36px;
+      overflow:hidden;
+      position:relative;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)),
+        linear-gradient(180deg, #0c1732 0%, #08111f 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#70809b;
+      font-weight:600;
+      text-align:center;
+      padding:20px;
+    }
+
+    .phone-screen img,
+    .watch-screen img,
+    .shot img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .watch-shell{
+      position:absolute;
+      left:4px;
+      bottom:92px;
+      width:min(186px, 26vw);
+      aspect-ratio:1/1.18;
+      border-radius:38px;
+      background:linear-gradient(180deg, #1f2738 0%, #04080f 100%);
+      border:1px solid rgba(255,255,255,.11);
+      padding:10px;
+      box-shadow:var(--shadow-soft);
+      z-index:3;
+    }
+
+    .watch-screen{
+      height:100%;
+      border-radius:28px;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+        linear-gradient(180deg, #091227 0%, #060b12 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#6d7d97;
+      text-align:center;
+      font-size:.82rem;
+      font-weight:600;
+      padding:14px;
+    }
+
+    .floating-card{
+      position:absolute;
+      right:0;
+      bottom:46px;
+      width:min(252px, 34vw);
+      padding:18px 18px 16px;
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(11,21,40,.78);
+      backdrop-filter:blur(18px);
+      box-shadow:var(--shadow-soft);
+      z-index:4;
+    }
+
+    .floating-kicker{
+      color:var(--muted);
+      font-size:.79rem;
+      margin-bottom:8px;
+    }
+
+    .floating-value{
+      font-size:2.15rem;
+      line-height:.92;
+      font-weight:900;
+      letter-spacing:-.06em;
+      margin-bottom:8px;
+    }
+
+    .floating-sub{
+      color:#95ddff;
+      font-weight:700;
+      font-size:.92rem;
+    }
+
+    .section{
+      padding:106px 0;
+    }
+
+    .section-head{
+      max-width:780px;
+      margin:0 auto 50px;
+      text-align:center;
+    }
+
+    .eyebrow-2{
+      display:inline-block;
+      margin-bottom:12px;
+      color:#94caff;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:.78rem;
+    }
+
+    .section-head h2{
+      font-size:clamp(2.35rem, 5vw, 4.4rem);
+      line-height:.97;
+      margin-bottom:12px;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      font-size:1.08rem;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .feature-card{
+      position:relative;
+      padding:28px;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.09);
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+    }
+
+    .feature-card::before{
+      content:"";
+      position:absolute;
+      inset:0 auto auto 0;
+      width:100%;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+      opacity:.7;
+    }
+
+    .icon-box{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.46rem;
+      margin-bottom:18px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .feature-card h3{
+      font-size:1.26rem;
+      margin-bottom:10px;
+    }
+
+    .feature-card p{
+      margin:0;
+      color:var(--muted);
+      font-size:.98rem;
+    }
+
+    .editorial{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:22px;
+      align-items:stretch;
+    }
+
+    .showcase-large,
+    .showcase-stack{
+      border-radius:32px;
+      border:1px solid rgba(255,255,255,.09);
+      background:
+        radial-gradient(circle at top right, rgba(86,168,255,.12), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:var(--shadow-soft);
+    }
+
+    .showcase-large{
+      padding:34px;
+      min-height:520px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .showcase-large h3,
+    .stack-card h3{
+      font-size:1.74rem;
+      margin-bottom:10px;
+    }
+
+    .showcase-large p,
+    .stack-card p{
+      color:var(--muted);
+      margin:0;
+    }
+
+    .shot{
+      margin-top:30px;
+      min-height:300px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+        linear-gradient(180deg, #0c1732 0%, #08101c 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#6c7c95;
+      font-weight:600;
+      text-align:center;
+      padding:20px;
+    }
+
+    .showcase-stack{
+      padding:16px;
+      display:grid;
+      gap:16px;
+    }
+
+    .stack-card{
+      padding:22px;
+      border-radius:24px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.07);
+    }
+
+    .stack-card .shot{
+      min-height:180px;
+      margin-top:18px;
+    }
+
+    .sports-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    .sport-chip{
+      padding:18px 16px;
+      border-radius:22px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      color:#dfe7f7;
+      font-weight:700;
+      text-align:center;
+    }
+
+    .sport-chip span{
+      font-size:1.24rem;
+    }
+
+    .pricing{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:22px;
+      max-width:920px;
+      margin:0 auto;
+    }
+
+    .price-card{
+      position:relative;
+      padding:34px;
+      border-radius:32px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
+    }
+
+    .price-card.featured{
+      background:
+        radial-gradient(circle at top right, rgba(86,168,255,.16), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid rgba(86,168,255,.32);
+      transform:translateY(-6px);
+    }
+
+    .plan-badge{
+      display:inline-block;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.04em;
+    }
+
+    .plan-badge.blue{
+      color:#cbe7ff;
+      background:rgba(86,168,255,.12);
+      border:1px solid rgba(86,168,255,.22);
+    }
+
+    .plan-badge.green{
+      color:#b7f5cf;
+      background:rgba(46,204,113,.12);
+      border:1px solid rgba(46,204,113,.22);
+    }
+
+    .plan-name{
+      margin:16px 0 8px;
+      font-size:1.48rem;
+      font-weight:800;
+    }
+
+    .price-line{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      margin-bottom:8px;
+    }
+
+    .amount{
+      font-size:4rem;
+      line-height:.9;
+      font-weight:900;
+      letter-spacing:-.07em;
+    }
+
+    .period{
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    .plan-sub{
+      color:var(--muted);
+      margin-bottom:22px;
+      font-size:.96rem;
+    }
+
+    .checks{
+      list-style:none;
+      padding:0;
+      margin:0 0 24px;
+    }
+
+    .checks li{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:9px 0;
+      color:#e4ecf9;
+    }
+
+    .checks .ok{
+      color:var(--green);
+      font-weight:900;
+      flex-shrink:0;
+    }
+
+    .final-cta{
+      padding:112px 0;
+    }
+
+    .cta-box{
+      position:relative;
+      overflow:hidden;
+      padding:56px 28px;
+      border-radius:38px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(circle at 18% 20%, rgba(86,168,255,.18), transparent 28%),
+        radial-gradient(circle at 82% 0%, rgba(123,225,255,.12), transparent 24%),
+        linear-gradient(135deg, #0c1730, #09111f 60%, #0b1322);
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .cta-box h2{
+      font-size:clamp(2.4rem, 5vw, 4.2rem);
+      line-height:.97;
+      margin-bottom:14px;
+    }
+
+    .cta-box p{
+      max-width:760px;
+      margin:0 auto 26px;
+      color:var(--muted);
+      font-size:1.08rem;
+    }
+
+    footer{
+      padding:30px 0 48px;
+      border-top:1px solid rgba(255,255,255,.06);
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links a:hover{color:#fff}
+
+    @media (max-width: 1080px){
+      .hero-grid,
+      .editorial,
+      .grid-3,
+      .sports-grid,
+      .pricing{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .hero-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-visual{
+        min-height:640px;
+      }
+
+      .editorial{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 720px){
+      .menu{display:none}
+      .hero{padding-top:54px}
+      .hero h1{font-size:3rem}
+      .grid-3,
+      .sports-grid,
+      .pricing{
+        grid-template-columns:1fr;
+      }
+      .hero-visual{min-height:520px}
+      .phone-shell{width:min(300px, 82vw)}
+      .watch-shell{
+        width:128px;
+        left:0;
+        bottom:70px;
+      }
+      .floating-card{
+        width:178px;
+        right:0;
+        bottom:24px;
+      }
+      .cta-box{
+        padding:40px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#">
+        <div class="brand-mark">
+          <img src="icon.png" alt="RacerTime icon" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-name">RacerTime</div>
+      </a>
+
+      <div class="menu">
+        <a href="#features" data-i18n="nav_features">Features</a>
+        <a href="#experience" data-i18n="nav_experience">Experience</a>
+        <a href="#sports" data-i18n="nav_sports">Sports</a>
+        <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+        <a href="support.html" data-i18n="nav_support">Support</a>
+      </div>
+
+      <div class="nav-right">
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="es">ES</button>
+          <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/racertime/id000000000" data-i18n="nav_download">
+          Download
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="kicker" data-i18n="hero_kicker">Apple Watch + iPhone • Premium water sports performance</div>
+          <h1>
+            <span data-i18n="hero_title_1">Precision timing.</span><br>
+            <span class="fade" data-i18n="hero_title_2">Built for open water.</span>
+          </h1>
+          <p class="hero-copy" data-i18n="hero_copy">
+            RacerTime combines race countdowns, buoy navigation, GPS performance analysis,
+            heart rate and maneuver detection into a single refined experience for serious
+            water sports athletes.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://apps.apple.com/app/racertime/id000000000" data-i18n="hero_cta_primary">
+              Download on the App Store
+            </a>
+            <a class="btn btn-secondary" href="#pricing" data-i18n="hero_cta_secondary">
+              View plans
+            </a>
+          </div>
+
+          <div class="hero-meta">
+            <div class="meta-pill" data-i18n="hero_meta_1">3-day free trial</div>
+            <div class="meta-pill" data-i18n="hero_meta_2">Optional iCloud backup</div>
+            <div class="meta-pill" data-i18n="hero_meta_3">HealthKit enabled</div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="ambient"></div>
+
+          <div class="device-stage">
+            <div class="watch-shell">
+              <div class="watch-screen">
+                <img src="screenshot-watch-1.jpg" alt="Apple Watch screenshot" onerror="this.remove()">
+                <span data-i18n="watch_placeholder">Apple Watch screenshot<br>368×448</span>
+              </div>
+            </div>
+
+            <div class="phone-shell">
+              <div class="phone-screen">
+                <img src="screenshot-iphone-1.jpg" alt="iPhone screenshot" onerror="this.remove()">
+                <span data-i18n="phone_placeholder">Premium iPhone screenshot<br>1290×2796</span>
+              </div>
+            </div>
+
+            <div class="floating-card">
+              <div class="floating-kicker" data-i18n="floating_top">Best annual value</div>
+              <div class="floating-value">58% off</div>
+              <div class="floating-sub" data-i18n="floating_sub">vs monthly</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow-2" data-i18n="features_eyebrow">Core features</div>
+          <h2 data-i18n="features_title">A premium race toolkit for demanding conditions</h2>
+          <p data-i18n="features_sub">
+            Designed for water, motion and clarity — with a visual language that feels
+            at home on both Apple Watch and iPhone.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="icon-box">⏱</div>
+            <h3 data-i18n="f1_title">Racing Timer</h3>
+            <p data-i18n="f1_body">
+              Countdown control through the Digital Crown for wet and demanding conditions
+              where touch interactions become unreliable.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon-box">🚩</div>
+            <h3 data-i18n="f2_title">Judge Mode</h3>
+            <p data-i18n="f2_body">
+              Independent race sequence control for officials directly on Apple Watch, with
+              distinct colors and purpose-built timing flow.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon-box">⚓</div>
+            <h3 data-i18n="f3_title">Buoy Guide</h3>
+            <p data-i18n="f3_body">
+              Configure real courses with 2–5 buoys, downwind angles and wind direction to
+              navigate each mark precisely.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon-box">📈</div>
+            <h3 data-i18n="f4_title">Performance Analysis</h3>
+            <p data-i18n="f4_body">
+              Review session maps, charts, speed metrics and long-term trends on iPhone after
+              every session.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon-box">↺</div>
+            <h3 data-i18n="f5_title">Maneuver Detection</h3>
+            <p data-i18n="f5_body">
+              Automatic detection of tacks and gybes in supported sailing disciplines, including
+              successful and failed attempts.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon-box">☁</div>
+            <h3 data-i18n="f6_title">Optional iCloud Backup</h3>
+            <p data-i18n="f6_body">
+              Sign in with Apple only if you want backup in your personal iCloud. The app remains
+              fully usable without sign-in.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="section" style="padding-top:28px">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow-2" data-i18n="exp_eyebrow">Product experience</div>
+          <h2 data-i18n="exp_title">Made to feel calm, precise and athletic</h2>
+          <p data-i18n="exp_sub">
+            The experience is intentionally split between wrist-first action and iPhone-first reflection.
+          </p>
+        </div>
+
+        <div class="editorial">
+          <div class="showcase-large">
+            <div>
+              <h3 data-i18n="exp_left_title">On the Watch</h3>
+              <p data-i18n="exp_left_body">
+                Immediate, tactile control for starts, buoy courses and race workflows.
+                Information stays glanceable, minimal and resilient in motion.
+              </p>
+            </div>
+            <div class="shot">
+              <img src="screenshot-watch-1.jpg" alt="Watch UI screenshot" onerror="this.remove()">
+              <span data-i18n="exp_left_placeholder">Apple Watch UI screenshot<br>Replace with real image</span>
+            </div>
+          </div>
+
+          <div class="showcase-stack">
+            <div class="stack-card">
+              <h3 data-i18n="exp_right_title">On the iPhone</h3>
+              <p data-i18n="exp_right_body">
+                A richer analysis layer for route review, speed overlays, session history,
+                charts, heart rate and maneuver insights after the race.
+              </p>
+              <div class="shot">
+                <img src="screenshot-iphone-2.jpg" alt="iPhone analytics screenshot" onerror="this.remove()">
+                <span data-i18n="exp_right_placeholder">iPhone analytics screenshot<br>Replace with real image</span>
+              </div>
+            </div>
+
+            <div class="stack-card">
+              <h3 data-i18n="exp_extra_title">Designed for clarity</h3>
+              <p data-i18n="exp_extra_body">
+                A visually calm interface, premium contrast, and focused information hierarchy
+                built to be readable in dynamic outdoor conditions.
+              </p>
+              <div class="shot">
+                <img src="screenshot-iphone-1.jpg" alt="iPhone dashboard screenshot" onerror="this.remove()">
+                <span data-i18n="exp_extra_placeholder">iPhone dashboard screenshot<br>Replace with real image</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sports" class="section" style="padding-top:24px">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow-2" data-i18n="sports_eyebrow">Sports</div>
+          <h2 data-i18n="sports_title">Disciplines supported by RacerTime</h2>
+          <p data-i18n="sports_sub">
+            Optimized for a range of sailing and training contexts, from wind-powered disciplines
+            to complementary land sessions.
+          </p>
+        </div>
+
+        <div class="sports-grid">
+          <div class="sport-chip"><span>🏄</span><span data-i18n="sport_1">Windsurf</span></div>
+          <div class="sport-chip"><span>🪁</span><span data-i18n="sport_2">Kitesurf</span></div>
+          <div class="sport-chip"><span>🪽</span><span data-i18n="sport_3">Wing Foil</span></div>
+          <div class="sport-chip"><span>🏄‍♂️</span><span data-i18n="sport_4">SUP</span></div>
+          <div class="sport-chip"><span>⛵</span><span data-i18n="sport_5">Sailing</span></div>
+          <div class="sport-chip"><span>🛟</span><span data-i18n="sport_6">Foil</span></div>
+          <div class="sport-chip"><span>🚴</span><span data-i18n="sport_7">Bike</span></div>
+          <div class="sport-chip"><span>🏃</span><span data-i18n="sport_8">Running</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow-2" data-i18n="pricing_eyebrow">Pricing</div>
+          <h2 data-i18n="pricing_title">Choose your season</h2>
+          <p data-i18n="pricing_sub">
+            Start with a 3-day free trial and unlock the full RacerTime experience.
+          </p>
+        </div>
+
+        <div class="pricing">
+          <div class="price-card featured">
+            <span class="plan-badge blue" data-i18n="price_badge_annual">Best value</span>
+            <div class="plan-name" data-i18n="price_annual_name">Annual</div>
+            <div class="price-line">
+              <div class="amount">$14.99</div>
+              <div class="period" data-i18n="price_annual_period">/ year</div>
+            </div>
+            <div class="plan-sub" data-i18n="price_annual_sub">About $1.25/month • 58% off vs monthly</div>
+
+            <ul class="checks">
+              <li><span class="ok">✓</span><span data-i18n="price_a_1">3-day free trial</span></li>
+              <li><span class="ok">✓</span><span data-i18n="price_a_2">Full access on iPhone and Apple Watch</span></li>
+              <li><span class="ok">✓</span><span data-i18n="price_a_3">GPS charts, stats and maneuver insights</span></li>
+              <li><span class="ok">✓</span><span data-i18n="price_a_4">Optional iCloud backup</span></li>
+            </ul>
+
+            <a class="btn btn-primary" style="width:100%" href="https://apps.apple.com/app/racertime/id000000000" data-i18n="price_cta_annual">
+              Start annual trial
+            </a>
+          </div>
+
+          <div class="price-card">
+            <span class="plan-badge green" data-i18n="price_badge_monthly">Flexible</span>
+            <div class="plan-name" data-i18n="price_monthly_name">Monthly</div>
+            <div class="price-line">
+              <div class="amount">$2.99</div>
+              <div class="period" data-i18n="price_monthly_period">/ month</div>
+            </div>
+            <div class="plan-sub" data-i18n="price_monthly_sub">Shorter commitment, same premium toolset</div>
+
+            <ul class="checks">
+              <li><span class="ok">✓</span><span data-i18n="price_m_1">3-day free trial</span></li>
+              <li><span class="ok">✓</span><span data-i18n="price_m_2">All premium features included</span></li>
+              <li><span class="ok">✓</span><span data-i18n="price_m_3">Manage or cancel anytime</span></li>
+              <li><span class="ok">✓</span><span data-i18n="price_m_4">Ideal for shorter race periods</span></li>
+            </ul>
+
+            <a class="btn btn-secondary" style="width:100%" href="https://apps.apple.com/app/racertime/id000000000" data-i18n="price_cta_monthly">
+              Start monthly trial
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container">
+        <div class="cta-box">
+          <h2 data-i18n="cta_title">Race with better timing and better insight</h2>
+          <p data-i18n="cta_sub">
+            Download RacerTime and bring a premium race workflow to your Apple Watch and iPhone —
+            from the countdown to the post-session review.
+          </p>
+          <a class="btn btn-primary" href="https://apps.apple.com/app/racertime/id000000000" data-i18n="cta_button">
+            Download on the App Store
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div data-i18n="footer_copy">© 2026 WindPowered • RacerTime</div>
+      <div class="footer-links">
+        <a href="support.html" data-i18n="footer_support">Support</a>
+        <a href="privacy-policy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="terms-of-use.html" data-i18n="footer_terms">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        nav_features:"Features",
+        nav_experience:"Experience",
+        nav_sports:"Sports",
+        nav_pricing:"Pricing",
+        nav_support:"Support",
+        nav_download:"Download",
+        hero_kicker:"Apple Watch + iPhone • Premium water sports performance",
+        hero_title_1:"Precision timing.",
+        hero_title_2:"Built for open water.",
+        hero_copy:"RacerTime combines race countdowns, buoy navigation, GPS performance analysis, heart rate and maneuver detection into a single refined experience for serious water sports athletes.",
+        hero_cta_primary:"Download on the App Store",
+        hero_cta_secondary:"View plans",
+        hero_meta_1:"3-day free trial",
+        hero_meta_2:"Optional iCloud backup",
+        hero_meta_3:"HealthKit enabled",
+        watch_placeholder:"Apple Watch screenshot<br>368×448",
+        phone_placeholder:"Premium iPhone screenshot<br>1290×2796",
+        floating_top:"Best annual value",
+        floating_sub:"vs monthly",
+        features_eyebrow:"Core features",
+        features_title:"A premium race toolkit for demanding conditions",
+        features_sub:"Designed for water, motion and clarity — with a visual language that feels at home on both Apple Watch and iPhone.",
+        f1_title:"Racing Timer",
+        f1_body:"Countdown control through the Digital Crown for wet and demanding conditions where touch interactions become unreliable.",
+        f2_title:"Judge Mode",
+        f2_body:"Independent race sequence control for officials directly on Apple Watch, with distinct colors and purpose-built timing flow.",
+        f3_title:"Buoy Guide",
+        f3_body:"Configure real courses with 2–5 buoys, downwind angles and wind direction to navigate each mark precisely.",
+        f4_title:"Performance Analysis",
+        f4_body:"Review session maps, charts, speed metrics and long-term trends on iPhone after every session.",
+        f5_title:"Maneuver Detection",
+        f5_body:"Automatic detection of tacks and gybes in supported sailing disciplines, including successful and failed attempts.",
+        f6_title:"Optional iCloud Backup",
+        f6_body:"Sign in with Apple only if you want backup in your personal iCloud. The app remains fully usable without sign-in.",
+        exp_eyebrow:"Product experience",
+        exp_title:"Made to feel calm, precise and athletic",
+        exp_sub:"The experience is intentionally split between wrist-first action and iPhone-first reflection.",
+        exp_left_title:"On the Watch",
+        exp_left_body:"Immediate, tactile control for starts, buoy courses and race workflows. Information stays glanceable, minimal and resilient in motion.",
+        exp_left_placeholder:"Apple Watch UI screenshot<br>Replace with real image",
+        exp_right_title:"On the iPhone",
+        exp_right_body:"A richer analysis layer for route review, speed overlays, session history, charts, heart rate and maneuver insights after the race.",
+        exp_right_placeholder:"iPhone analytics screenshot<br>Replace with real image",
+        exp_extra_title:"Designed for clarity",
+        exp_extra_body:"A visually calm interface, premium contrast, and focused information hierarchy built to be readable in dynamic outdoor conditions.",
+        exp_extra_placeholder:"iPhone dashboard screenshot<br>Replace with real image",
+        sports_eyebrow:"Sports",
+        sports_title:"Disciplines supported by RacerTime",
+        sports_sub:"Optimized for a range of sailing and training contexts, from wind-powered disciplines to complementary land sessions.",
+        sport_1:"Windsurf", sport_2:"Kitesurf", sport_3:"Wing Foil", sport_4:"SUP",
+        sport_5:"Sailing", sport_6:"Foil", sport_7:"Bike", sport_8:"Running",
+        pricing_eyebrow:"Pricing",
+        pricing_title:"Choose your season",
+        pricing_sub:"Start with a 3-day free trial and unlock the full RacerTime experience.",
+        price_badge_annual:"Best value",
+        price_annual_name:"Annual",
+        price_annual_period:"/ year",
+        price_annual_sub:"About $1.25/month • 58% off vs monthly",
+        price_a_1:"3-day free trial",
+        price_a_2:"Full access on iPhone and Apple Watch",
+        price_a_3:"GPS charts, stats and maneuver insights",
+        price_a_4:"Optional iCloud backup",
+        price_cta_annual:"Start annual trial",
+        price_badge_monthly:"Flexible",
+        price_monthly_name:"Monthly",
+        price_monthly_period:"/ month",
+        price_monthly_sub:"Shorter commitment, same premium toolset",
+        price_m_1:"3-day free trial",
+        price_m_2:"All premium features included",
+        price_m_3:"Manage or cancel anytime",
+        price_m_4:"Ideal for shorter race periods",
+        price_cta_monthly:"Start monthly trial",
+        cta_title:"Race with better timing and better insight",
+        cta_sub:"Download RacerTime and bring a premium race workflow to your Apple Watch and iPhone — from the countdown to the post-session review.",
+        cta_button:"Download on the App Store",
+        footer_copy:"© 2026 WindPowered • RacerTime",
+        footer_support:"Support",
+        footer_privacy:"Privacy Policy",
+        footer_terms:"Terms of Use"
+      },
+      es: {
+        nav_features:"Funciones",
+        nav_experience:"Experiencia",
+        nav_sports:"Deportes",
+        nav_pricing:"Planes",
+        nav_support:"Soporte",
+        nav_download:"Descargar",
+        hero_kicker:"Apple Watch + iPhone • rendimiento premium para deportes acuáticos",
+        hero_title_1:"Precisión total.",
+        hero_title_2:"Diseñado para aguas abiertas.",
+        hero_copy:"RacerTime combina cuentas regresivas de regata, guía de boyas, análisis GPS, frecuencia cardíaca y detección de maniobras en una experiencia refinada para atletas serios de deportes acuáticos.",
+        hero_cta_primary:"Descargar en App Store",
+        hero_cta_secondary:"Ver planes",
+        hero_meta_1:"Prueba gratis de 3 días",
+        hero_meta_2:"Respaldo iCloud opcional",
+        hero_meta_3:"Integración con HealthKit",
+        watch_placeholder:"Captura Apple Watch<br>368×448",
+        phone_placeholder:"Captura premium iPhone<br>1290×2796",
+        floating_top:"Mejor valor anual",
+        floating_sub:"vs mensual",
+        features_eyebrow:"Funciones clave",
+        features_title:"Un toolkit premium para competir en condiciones exigentes",
+        features_sub:"Diseñado para agua, movimiento y claridad — con un lenguaje visual que se siente natural tanto en Apple Watch como en iPhone.",
+        f1_title:"Timer de Regata",
+        f1_body:"Control de cuenta regresiva con la Corona Digital para condiciones mojadas y exigentes donde tocar la pantalla no siempre es confiable.",
+        f2_title:"Modo Juez",
+        f2_body:"Control independiente de secuencias de regata para oficiales directamente en Apple Watch, con colores y flujo pensados para ese rol.",
+        f3_title:"Guía de Boyas",
+        f3_body:"Configura recorridos reales con 2–5 boyas, ángulos downwind y dirección del viento para navegar cada marca con precisión.",
+        f4_title:"Análisis de Rendimiento",
+        f4_body:"Revisa mapas, gráficos, métricas de velocidad y tendencias en iPhone después de cada sesión.",
+        f5_title:"Detección de Maniobras",
+        f5_body:"Detección automática de viradas y trasluchadas en disciplinas de vela compatibles, incluyendo intentos exitosos y fallidos.",
+        f6_title:"Respaldo iCloud Opcional",
+        f6_body:"Inicia sesión con Apple solo si deseas respaldo en tu iCloud personal. La app funciona completamente sin iniciar sesión.",
+        exp_eyebrow:"Experiencia de producto",
+        exp_title:"Diseñado para sentirse calmo, preciso y atlético",
+        exp_sub:"La experiencia está dividida intencionalmente entre acción en la muñeca y análisis en el iPhone.",
+        exp_left_title:"En el Watch",
+        exp_left_body:"Control inmediato y táctil para largadas, recorridos de boyas y flujo de regata. La información se mantiene clara, mínima y resistente al movimiento.",
+        exp_left_placeholder:"Captura UI Apple Watch<br>Reemplazar por imagen real",
+        exp_right_title:"En el iPhone",
+        exp_right_body:"Una capa de análisis más rica para revisar rutas, overlays de velocidad, historial, gráficos, frecuencia cardíaca y maniobras.",
+        exp_right_placeholder:"Captura analítica iPhone<br>Reemplazar por imagen real",
+        exp_extra_title:"Diseñado para la claridad",
+        exp_extra_body:"Una interfaz visualmente calma, contraste premium y una jerarquía de información pensada para leerse en condiciones exteriores dinámicas.",
+        exp_extra_placeholder:"Captura dashboard iPhone<br>Reemplazar por imagen real",
+        sports_eyebrow:"Deportes",
+        sports_title:"Disciplinas compatibles con RacerTime",
+        sports_sub:"Optimizado para contextos de vela y entrenamiento, desde disciplinas impulsadas por el viento hasta sesiones complementarias en tierra.",
+        sport_1:"Windsurf", sport_2:"Kitesurf", sport_3:"Wing Foil", sport_4:"SUP",
+        sport_5:"Sailing", sport_6:"Foil", sport_7:"Bici", sport_8:"Running",
+        pricing_eyebrow:"Planes",
+        pricing_title:"Elige tu temporada",
+        pricing_sub:"Empieza con 3 días gratis y desbloquea toda la experiencia RacerTime.",
+        price_badge_annual:"Mejor valor",
+        price_annual_name:"Anual",
+        price_annual_period:"/ año",
+        price_annual_sub:"Aprox. $1.25/mes • 58% off vs mensual",
+        price_a_1:"Prueba gratis de 3 días",
+        price_a_2:"Acceso completo en iPhone y Apple Watch",
+        price_a_3:"Gráficos GPS, stats y maniobras",
+        price_a_4:"Respaldo iCloud opcional",
+        price_cta_annual:"Iniciar prueba anual",
+        price_badge_monthly:"Flexible",
+        price_monthly_name:"Mensual",
+        price_monthly_period:"/ mes",
+        price_monthly_sub:"Menor compromiso, mismas funciones premium",
+        price_m_1:"Prueba gratis de 3 días",
+        price_m_2:"Todas las funciones premium incluidas",
+        price_m_3:"Gestiona o cancela cuando quieras",
+        price_m_4:"Ideal para temporadas más cortas",
+        price_cta_monthly:"Iniciar prueba mensual",
+        cta_title:"Compite con mejor tiempo y mejor análisis",
+        cta_sub:"Descarga RacerTime y lleva un flujo de regata premium a tu Apple Watch y tu iPhone — desde la cuenta regresiva hasta la revisión final.",
+        cta_button:"Descargar en App Store",
+        footer_copy:"© 2026 WindPowered • RacerTime",
+        footer_support:"Soporte",
+        footer_privacy:"Política de Privacidad",
+        footer_terms:"Términos de Uso"
+      },
+      pt: {
+        nav_features:"Recursos",
+        nav_experience:"Experiência",
+        nav_sports:"Esportes",
+        nav_pricing:"Planos",
+        nav_support:"Suporte",
+        nav_download:"Baixar",
+        hero_kicker:"Apple Watch + iPhone • desempenho premium para esportes aquáticos",
+        hero_title_1:"Precisão total.",
+        hero_title_2:"Feito para águas abertas.",
+        hero_copy:"RacerTime combina contagem regressiva de regata, guia de boias, análise GPS, frequência cardíaca e deteção de manobras numa experiência refinada para atletas sérios de esportes aquáticos.",
+        hero_cta_primary:"Baixar na App Store",
+        hero_cta_secondary:"Ver planos",
+        hero_meta_1:"Teste grátis de 3 dias",
+        hero_meta_2:"Backup opcional no iCloud",
+        hero_meta_3:"Integração com HealthKit",
+        watch_placeholder:"Captura Apple Watch<br>368×448",
+        phone_placeholder:"Captura premium iPhone<br>1290×2796",
+        floating_top:"Melhor valor anual",
+        floating_sub:"vs mensal",
+        features_eyebrow:"Recursos principais",
+        features_title:"Um toolkit premium para competir em condições exigentes",
+        features_sub:"Desenhado para água, movimento e clareza — com uma linguagem visual natural tanto no Apple Watch quanto no iPhone.",
+        f1_title:"Timer de Regata",
+        f1_body:"Controle de contagem regressiva com a Coroa Digital para condições molhadas e exigentes onde tocar a tela nem sempre é confiável.",
+        f2_title:"Modo Juiz",
+        f2_body:"Controle independente de sequências de regata para oficiais diretamente no Apple Watch, com cores e fluxo pensados para esse papel.",
+        f3_title:"Guia de Boias",
+        f3_body:"Configure percursos reais com 2–5 boias, ângulos downwind e direção do vento para navegar cada marca com precisão.",
+        f4_title:"Análise de Desempenho",
+        f4_body:"Revise mapas, gráficos, métricas de velocidade e tendências no iPhone após cada sessão.",
+        f5_title:"Deteção de Manobras",
+        f5_body:"Deteção automática de bordos e cambadas em disciplinas de vela compatíveis, incluindo tentativas bem-sucedidas e falhadas.",
+        f6_title:"Backup Opcional no iCloud",
+        f6_body:"Inicie sessão com a Apple apenas se quiser backup no seu iCloud pessoal. A app continua totalmente utilizável sem iniciar sessão.",
+        exp_eyebrow:"Experiência do produto",
+        exp_title:"Feito para parecer calmo, preciso e atlético",
+        exp_sub:"A experiência é dividida intencionalmente entre ação no pulso e análise no iPhone.",
+        exp_left_title:"No Watch",
+        exp_left_body:"Controle imediato e tátil para largadas, percursos de boias e fluxo de regata. A informação permanece clara, mínima e resistente ao movimento.",
+        exp_left_placeholder:"Captura UI Apple Watch<br>Substituir por imagem real",
+        exp_right_title:"No iPhone",
+        exp_right_body:"Uma camada analítica mais rica para rever rotas, overlays de velocidade, histórico, gráficos, frequência cardíaca e manobras.",
+        exp_right_placeholder:"Captura analítica iPhone<br>Substituir por imagem real",
+        exp_extra_title:"Desenhado para clareza",
+        exp_extra_body:"Uma interface visualmente calma, contraste premium e hierarquia de informação pensada para leitura em condições externas dinâmicas.",
+        exp_extra_placeholder:"Captura dashboard iPhone<br>Substituir por imagem real",
+        sports_eyebrow:"Esportes",
+        sports_title:"Disciplinas compatíveis com RacerTime",
+        sports_sub:"Otimizado para contextos de vela e treino, desde disciplinas movidas pelo vento até sessões complementares em terra.",
+        sport_1:"Windsurf", sport_2:"Kitesurf", sport_3:"Wing Foil", sport_4:"SUP",
+        sport_5:"Sailing", sport_6:"Foil", sport_7:"Bicicleta", sport_8:"Corrida",
+        pricing_eyebrow:"Planos",
+        pricing_title:"Escolha a sua temporada",
+        pricing_sub:"Comece com 3 dias grátis e desbloqueie toda a experiência RacerTime.",
+        price_badge_annual:"Melhor valor",
+        price_annual_name:"Anual",
+        price_annual_period:"/ ano",
+        price_annual_sub:"Cerca de $1.25/mês • 58% off vs mensal",
+        price_a_1:"Teste grátis de 3 dias",
+        price_a_2:"Acesso completo no iPhone e Apple Watch",
+        price_a_3:"Gráficos GPS, stats e manobras",
+        price_a_4:"Backup opcional no iCloud",
+        price_cta_annual:"Iniciar teste anual",
+        price_badge_monthly:"Flexível",
+        price_monthly_name:"Mensal",
+        price_monthly_period:"/ mês",
+        price_monthly_sub:"Compromisso mais curto, mesmas funções premium",
+        price_m_1:"Teste grátis de 3 dias",
+        price_m_2:"Todos os recursos premium incluídos",
+        price_m_3:"Gerencie ou cancele quando quiser",
+        price_m_4:"Ideal para períodos mais curtos",
+        price_cta_monthly:"Iniciar teste mensal",
+        cta_title:"Compita com melhor tempo e melhor análise",
+        cta_sub:"Baixe o RacerTime e leve um fluxo premium de regata ao seu Apple Watch e iPhone — da contagem regressiva à revisão final.",
+        cta_button:"Baixar na App Store",
+        footer_copy:"© 2026 WindPowered • RacerTime",
+        footer_support:"Suporte",
+        footer_privacy:"Política de Privacidade",
+        footer_terms:"Termos de Uso"
+      }
+    };
+
+    function setLanguage(lang){
+      const dict = translations[lang] || translations.en;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.innerHTML = dict[key];
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+      localStorage.setItem('racertime-lang', lang);
+    }
+
+    const savedLang = localStorage.getItem('racertime-lang') || 'en';
+    window.addEventListener('DOMContentLoaded', () => {
+      setLanguage(savedLang);
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+      });
+    });
+  </script>
+</body>
+</html>
